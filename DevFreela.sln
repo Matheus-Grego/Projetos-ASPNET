@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevFreela", "DevFreela\DevFreela.csproj", "{EAC5384F-E682-43AC-94EA-2BDE28F32CEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EAC5384F-E682-43AC-94EA-2BDE28F32CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC5384F-E682-43AC-94EA-2BDE28F32CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC5384F-E682-43AC-94EA-2BDE28F32CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC5384F-E682-43AC-94EA-2BDE28F32CEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
