@@ -12,6 +12,7 @@ public class ProjectEntity : BaseEntity
         ClientID = clientId;
         TotalCost = totalCost;
         Status = ProjectStatus.Created;
+        StatusId = 0;
         Technologies = [];
         Comments = [];
     }
@@ -23,6 +24,7 @@ public class ProjectEntity : BaseEntity
     public UserEntity Client { get; set; }
     public UserEntity Developer { get; set; }
     public decimal TotalCost { get; set; }
+    public int StatusId { get; set; }
     public ProjectStatus Status { get; set; }
     public List<TechEntity> Technologies { get; set; }
     public List<CommentsEntity> Comments { get; set; }

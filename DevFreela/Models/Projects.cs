@@ -1,3 +1,5 @@
+using DevFreela.Enums;
+
 namespace DevFreela.Models;
 
 public class Projects : BaseModel
@@ -19,5 +21,16 @@ public class Projects : BaseModel
     public List<Technologies> Technologies { get; set; }
     public decimal TotalCost { get; set; }
     public decimal Stars { get; set; }
+    public ProjectStatus Status { get; set; }
+
+    public void UpdateTechnologies(List<Technologies> technologies)
+    {
+        Technologies = technologies;
+    }
+    public void UpdateTotalCost(decimal totalCost)
+    {
+        TotalCost = totalCost;
+    }
+    
     
 }
