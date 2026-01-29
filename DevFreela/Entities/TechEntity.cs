@@ -9,4 +9,7 @@ public class TechEntity : BaseEntity
     public TechCategory Category { get; set; }
     public Guid ProjectId { get; set; }
     public ProjectEntity Project { get; set; }
+    
+    public List<UserTechEntity> UserTech { get; set; }
+    public List<UserEntity> Users { get; set; }
 }

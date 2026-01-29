@@ -14,6 +14,9 @@ public class CommentsEntity : BaseEntity
 
     public Guid ProjectId { get; set; }
     public Guid UserId { get; set; }
+    
+    public ProjectEntity Project { get; set; }
+    public UserEntity User { get; set; }
     public string Title{ get; set; }
     public string Body { get; set; }
     public List<byte[]> Images { get; set; }

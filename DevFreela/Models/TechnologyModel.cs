@@ -2,9 +2,9 @@ using DevFreela.Enums;
 
 namespace DevFreela.Models;
 
-public class Technologies : BaseModel
+public class TechnologyModel : BaseModel
 {
-   public Technologies(string name, string description, TechCategory category) : base()
+   public TechnologyModel(string name, string description, TechCategory category) : base()
    {
       Name = name;
       Description = description;

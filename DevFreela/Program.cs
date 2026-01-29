@@ -1,5 +1,7 @@
 using DevFreela.Handlers;
 using DevFreela.Models;
+using DevFreela.Persistance;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddProblemDetails();
 
 builder.Services.Configure<FreelanceTotalCostModel>(
     builder.Configuration.GetSection("FreelanceTotalCostConfig"));
+
+builder.Services.AddDbContext<DevFreelaDbContext>(o => o.UseInMemoryDatabase("devfreeladb"));
 
 var app = builder.Build();
 

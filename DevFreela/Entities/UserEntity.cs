@@ -12,4 +12,7 @@ public class UserEntity : BaseEntity
     public bool isActive { get; set; }
     public DateTime BirthDate { get; set; }
     
+    public List<ProjectEntity> Projects { get; set; }
+    public List<UserTechEntity> Technologies { get; set; }
+    
 }

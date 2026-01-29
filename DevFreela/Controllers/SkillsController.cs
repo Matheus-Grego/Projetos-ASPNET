@@ -1,3 +1,4 @@
+using DevFreela.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,5 +12,17 @@ public class SkillsController : ControllerBase
     public IActionResult GetAll()
     {
         return Ok();
+    }
+
+    [HttpPost]
+    public IActionResult Post(TechnologyModel technologyModel)
+    {
+        return NoContent();
+    }
+
+    [HttpPut]
+    public IActionResult Put(TechnologyModel technologyModel)
+    {
+        return NoContent();
     }
 }

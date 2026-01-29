@@ -1,4 +1,5 @@
 using DevFreela.Models;
+using DevFreela.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -8,32 +9,33 @@ namespace DevFreela.Controllers;
 [Route("api/projects")]
 public class ProjectsController : ControllerBase
 {
-    private readonly FreelanceTotalCostModel _config;
-    public ProjectsController(IOptions<FreelanceTotalCostModel> options)
+    private readonly DevFreelaDbContext _dbContext;
+    public ProjectsController(DevFreelaDbContext context)
     {
-        _config = options.Value;
+        _dbContext =  context;
     }
     
     [HttpGet("{projectId}")]
-    public IActionResult GetProject(int projectId)
+    public IActionResult GetProject(Guid projectId)
     {
-        throw new Exception();
+
+        // return _dbContext.Projects.SingleOrDefault(x => x.Id == projectId);
+      
         return Ok(projectId);
     }
 
     [HttpPost]
-    public IActionResult PostProject(Projects project)
+    public IActionResult PostProject(ProjectModel projectModel)
     {
-        if (project.TotalCost > _config.maxCost || project.TotalCost < _config.minCost)
-        {
-            return BadRequest();
-        }
-        return CreatedAtAction(nameof(GetProject), new { projectId = project.Id }, project);
+        
+        return CreatedAtAction(nameof(GetProject), new { projectId = projectModel.Id }, projectModel);
     }
 
     [HttpPut("{projectId}")]
-    public IActionResult PutProject(int projectId, Projects project)
+    public IActionResult PutProject(int projectId, ProjectModel projectModel)
     {
         return NoContent();
     }
+    
+    
 }
