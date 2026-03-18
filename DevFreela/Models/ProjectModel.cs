@@ -1,21 +1,21 @@
 using System.ComponentModel.DataAnnotations;
+using DevFreela.Entities;
 using DevFreela.Enums;
 
 namespace DevFreela.Models;
 
 public class ProjectModel : BaseModel 
 {
-    public ProjectModel(string name, string description,Guid developerId, Guid clientId, List<TechnologyModel> technologies, decimal stars)
+    public ProjectModel(string title, string description,Guid developerId, Guid clientId, List<TechnologyModel> technologies)
     {
-        Name = name;
+        Title = title;
         Description = description;
         Technologies = technologies;
-        Stars = stars;
         ClientId = clientId;
         DeveloperId = developerId;
     }
     
-    public string Name { get; set; }
+    public string Title { get; set; }
     public string Description { get; set; }
     public Guid DeveloperId { get; set; }
     public Guid ClientId { get; set; }
@@ -24,6 +24,10 @@ public class ProjectModel : BaseModel
     public decimal Stars { get; set; }
     public ProjectStatus Status { get; set; }
 
+
+    public static ProjectModel FromEntity(ProjectEntity project) 
+        => new(project.Title,project.Description, project.DeveloperId, project.ClientID,project.Technologies);
+    
     public void UpdateTechnologies(List<TechnologyModel> technologies)
     {
         if (technologies == null || !technologies.Any())

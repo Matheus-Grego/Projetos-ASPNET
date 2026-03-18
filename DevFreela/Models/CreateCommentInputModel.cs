@@ -1,16 +1,21 @@
+using DevFreela.Entities;
+
 namespace DevFreela.Models;
 
 public class CreateCommentInputModel : BaseModel
 {
-    public CreateCommentInputModel(string message, Guid userId, Guid projectId)
+    public CreateCommentInputModel(string content, Guid userId, Guid projectId)
     {
-        Message = message;
+        Content = content;
         UserId = userId;
         ProjectId = projectId;
         Likes = 0;
     }
-    public string Message { get; set; }
+    public string Content { get; set; }
     public Guid UserId { get; set; }
     public Guid ProjectId { get; set; }
     public int Likes { get; set; }
+
+    public static CreateCommentInputModel FromEntity(CommentsEntity comment) 
+        => new CreateCommentInputModel(comment.Content, comment.UserId, comment.ProjectId);
 }

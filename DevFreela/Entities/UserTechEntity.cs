@@ -2,6 +2,13 @@ namespace DevFreela.Entities;
 
 public class UserTechEntity : BaseEntity
 {
+    public UserTechEntity(Guid userId, Guid projectId, Guid techId) : base()
+    {
+        UserId = userId;
+        ProjectId = projectId;
+        TechId = techId;
+    }
+
     public Guid UserId { get; set; }
     public Guid ProjectId { get; set; }
     public Guid TechId { get; set; }

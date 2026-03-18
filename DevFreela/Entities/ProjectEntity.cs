@@ -1,11 +1,12 @@
 using DevFreela.Enums;
+using DevFreela.Models;
 
 namespace DevFreela.Entities;
 
 public class ProjectEntity : BaseEntity
 {
     protected ProjectEntity() {}
-    public ProjectEntity(string title, Guid developerId, Guid clientId, decimal totalCost) : base()
+    public ProjectEntity(string title, string description, Guid developerId, Guid clientId, decimal totalCost) : base()
     {
         Title = title;
         DeveloperId = developerId;
@@ -26,6 +27,26 @@ public class ProjectEntity : BaseEntity
     public decimal TotalCost { get; set; }
     public int StatusId { get; set; }
     public ProjectStatus Status { get; set; }
-    public List<TechEntity> Technologies { get; set; }
+    public List<TechnologyModel> Technologies { get; set; }
     public List<CommentsEntity> Comments { get; set; }
+
+    public void Update(string title, string description, decimal totalCost)
+    {
+        Title = title;
+        Description = description;
+        TotalCost = totalCost;
+    }
+    
+    public void Start()
+    {
+        if (Status != ProjectStatus.Created)
+        {
+            throw new InvalidOperationException();
+        }
+
+        Status = ProjectStatus.OnGoing;
+    }
+
+    
+
 }
