@@ -2,14 +2,15 @@ namespace DevFreela.Entities;
 
 public class UserEntity : BaseEntity
 {
-    public UserEntity(string username, string fullname, string email, DateTime birthDate) : base()
+    public UserEntity(string username, string fullName, string email, DateTime birthDate) : base()
     {
         Username = username;
-        FullName = fullname;
+        FullName = fullName;
         Email = email;
         BirthDate = birthDate;
         isActive = true;
-        Projects = [];
+        ProjectsAsDeveloper = [];
+        ProjectsAsClient = [];
         Technologies = [];
         Rating = decimal.Zero;
     }
@@ -21,7 +22,8 @@ public class UserEntity : BaseEntity
     public decimal Rating { get; set; }
     public bool isActive { get; set; }
     public DateTime BirthDate { get; set; }
-    public List<ProjectEntity> Projects { get; set; }
+    public List<ProjectEntity> ProjectsAsDeveloper { get; set; }
+    public List<ProjectEntity> ProjectsAsClient { get; set; }
     public List<UserTechEntity> Technologies { get; set; }
     
 }

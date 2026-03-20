@@ -4,16 +4,21 @@ namespace DevFreela.Models;
 
 public class UserModel
 {
-    public UserModel(string username, string email, DateTime birthday) : base()
+    public UserModel(string username, string email, DateTime birthday, List<string> technologies) : base()
     {
         Username = username;
         Email = email;
         Birthday = birthday;
+        Technologies = technologies;
     }
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public DateTime Birthday { get; set; }
+    public string Username { get; private set; }
+    public string Email { get; private set; }
+    public DateTime Birthday { get; private set; }
+    public List<string> Technologies { get; set; }
 
     public static UserModel FromEntity(UserEntity entity)
-        => new UserModel(entity.Username, entity.Email, entity.BirthDate);
+    {
+        var technologies = entity.Technologies.Select(u => u.Technology.Description).ToList();
+        return new UserModel(entity.Username, entity.Email, entity.BirthDate, technologies);
+    }
 }

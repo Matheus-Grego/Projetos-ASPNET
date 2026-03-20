@@ -35,12 +35,13 @@ public class DevFreelaDbContext : DbContext
         {
             e.HasKey(p => p.Id);
             
-            e.HasOne(f => f.Developer)
-                .WithMany(p => p.Projects)
-                .HasForeignKey(fk => fk.DeveloperId)
+            e.HasOne(p => p.Developer)
+                .WithMany(u => u.ProjectsAsDeveloper)
+                .HasForeignKey(p => p.DeveloperId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
-            e.HasOne(c => c.Client).WithMany(p => p.Projects)
+
+            e.HasOne(p => p.Client)
+                .WithMany(u => u.ProjectsAsClient)
                 .HasForeignKey(p => p.ClientID)
                 .OnDelete(DeleteBehavior.Restrict);
         });
@@ -54,7 +55,7 @@ public class DevFreelaDbContext : DbContext
         {
             e.HasKey(p => p.Id);
 
-            e.HasOne(p => p.Tech).WithMany(p => p.UserTech)
+            e.HasOne(p => p.Technology).WithMany(p => p.UserTech)
                 .HasForeignKey(fk => fk.TechId)
                 .OnDelete(DeleteBehavior.Restrict);
                 

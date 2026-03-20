@@ -57,4 +57,16 @@ public class SkillsController : ControllerBase
         _dbContext.SaveChanges();
         return NoContent();
     }
+
+    [HttpGet("{skillId}/users")]
+    public IActionResult GetUsersBySkill(Guid skillId)
+    {
+        var skill = _dbContext.UserTechs.Where(x => x.TechId == skillId).ToList();
+
+        if (skill == null)
+            return NotFound();
+        
+        var users = skill.Select(x => UserModel.FromEntity(x.User)).ToList();
+        return Ok(users);
+    }
 }

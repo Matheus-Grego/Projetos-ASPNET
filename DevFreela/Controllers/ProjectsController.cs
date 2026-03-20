@@ -20,15 +20,24 @@ public class ProjectsController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var projects = _dbContext.Projects
-            .Include(p => p.Client)
-            .Include(p => p.Developer)
-            .Where(p => p.IsDeleted == false)
-            .ToList();
-        
-        var model = projects.Select(ProjectModel.FromEntity).ToList();
+        try
+        {
+            var projects = _dbContext.Projects
+                .Include(p => p.Client)
+                .Include(p => p.Developer)
+                .Where(p => p.IsDeleted == false)
+                .ToList();
 
-        return Ok(model);
+            var model = projects.Select(ProjectModel.FromEntity).ToList();
+
+            return Ok(model);
+
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+       
     }
     
     [HttpGet("{projectId}")]
