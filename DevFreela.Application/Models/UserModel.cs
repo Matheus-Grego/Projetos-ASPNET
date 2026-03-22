@@ -1,6 +1,6 @@
-using DevFreela.Entities;
+using DevFreela.Domain.Entities;
 
-namespace DevFreela.Models;
+namespace DevFreela.Application.Models;
 
 public class UserModel
 {

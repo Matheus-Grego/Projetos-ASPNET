@@ -1,4 +1,4 @@
-namespace DevFreela.Enums;
+namespace DevFreela.Domain.Enums;
 
 public enum ProjectStatus
 {

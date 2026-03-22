@@ -1,5 +1,5 @@
-using DevFreela.Models;
-using DevFreela.Persistance;
+using DevFreela.Application.Models;
+using DevFreela.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,8 +38,8 @@ public class SkillsController : ControllerBase
         var skill = _dbContext.Techs.SingleOrDefault(t => t.Id == skillId);
         if (skill == null)
             return NotFound();
-        
-        skill.Update(technologyModel);
+        var entity = TechnologyModel.ToEntity(technologyModel);
+        skill.Update(entity);
         _dbContext.SaveChanges();
         
         return NoContent();

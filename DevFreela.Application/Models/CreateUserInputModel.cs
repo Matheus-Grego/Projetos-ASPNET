@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using DevFreela.Entities;
+using DevFreela.Domain.Entities;
 using Microsoft.Extensions.Options;
 
-namespace DevFreela.Models;
+namespace DevFreela.Application.Models;
 
 public class CreateUserInputModel : BaseModel
 {

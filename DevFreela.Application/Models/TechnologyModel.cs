@@ -1,7 +1,7 @@
-using DevFreela.Entities;
-using DevFreela.Enums;
+using DevFreela.Domain.Entities;
+using DevFreela.Domain.Enums;
 
-namespace DevFreela.Models;
+namespace DevFreela.Application.Models;
 
 public class TechnologyModel : BaseModel
 {

@@ -1,6 +1,6 @@
 using DevFreela.Handlers;
-using DevFreela.Models;
-using DevFreela.Persistance;
+using DevFreela.Application.Models;
+using DevFreela.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

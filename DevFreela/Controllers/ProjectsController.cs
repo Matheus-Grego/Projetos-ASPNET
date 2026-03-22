@@ -1,6 +1,6 @@
-using DevFreela.Entities;
-using DevFreela.Models;
-using DevFreela.Persistance;
+using DevFreela.Domain.Entities;
+using DevFreela.Application.Models;
+using DevFreela.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -59,7 +59,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post( CreateProjectInputModel model)
+    public IActionResult Post(CreateProjectInputModel model)
     {
         var entity = model.toEntity();
         _dbContext.Projects.Add(entity);

@@ -1,4 +1,4 @@
-namespace DevFreela.Models;
+namespace DevFreela.Application.Models;
 
 public class FreelanceTotalCostModel
 {

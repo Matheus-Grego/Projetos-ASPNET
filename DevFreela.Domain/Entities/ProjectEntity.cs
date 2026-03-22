@@ -1,7 +1,6 @@
-using DevFreela.Enums;
-using DevFreela.Models;
+using DevFreela.Domain.Enums;
 
-namespace DevFreela.Entities;
+namespace DevFreela.Domain.Entities;
 
 public class ProjectEntity : BaseEntity
 {
@@ -27,7 +26,7 @@ public class ProjectEntity : BaseEntity
     public decimal TotalCost { get; set; }
     public int StatusId { get; set; }
     public ProjectStatus Status { get; set; }
-    public List<TechnologyModel> Technologies { get; set; }
+    public List<TechEntity> Technologies { get; set; }
     public List<CommentsEntity> Comments { get; set; }
 
     public void Update(string title, string description, decimal totalCost)

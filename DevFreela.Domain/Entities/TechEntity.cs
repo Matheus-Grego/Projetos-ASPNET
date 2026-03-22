@@ -1,7 +1,6 @@
-using DevFreela.Enums;
-using DevFreela.Models;
+using DevFreela.Domain.Enums;
 
-namespace DevFreela.Entities;
+namespace DevFreela.Domain.Entities;
 
 public class TechEntity : BaseEntity
 {
@@ -19,11 +18,11 @@ public class TechEntity : BaseEntity
     public List<UserTechEntity> UserTech { get; set; }
     public List<UserEntity> Users { get; set; }
 
-    public void Update(TechnologyModel technologyModel)
+    public void Update(TechEntity tech)
     {
-        Name = technologyModel.Name;
-        Description = technologyModel.Description;
-        Category = technologyModel.Category;
+        Name = tech.Name;
+        Description = tech.Description;
+        Category = tech.Category;
     }
 
     public void Delete()

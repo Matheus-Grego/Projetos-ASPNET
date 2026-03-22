@@ -1,6 +1,6 @@
 using System.Reflection.Metadata;
 
-namespace DevFreela.Entities;
+namespace DevFreela.Domain.Entities;
 
 public class CommentsEntity : BaseEntity
 {

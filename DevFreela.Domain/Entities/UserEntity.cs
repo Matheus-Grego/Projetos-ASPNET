@@ -1,4 +1,4 @@
-namespace DevFreela.Entities;
+namespace DevFreela.Domain.Entities;
 
 public class UserEntity : BaseEntity
 {
