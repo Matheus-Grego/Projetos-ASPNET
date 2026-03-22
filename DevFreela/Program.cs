@@ -21,7 +21,10 @@ builder.Services.AddProblemDetails();
 builder.Services.Configure<FreelanceTotalCostModel>(
     builder.Configuration.GetSection("FreelanceTotalCostConfig"));
 
-builder.Services.AddDbContext<DevFreelaDbContext>(o => o.UseInMemoryDatabase("devfreeladb"));
+// builder.Services.AddDbContext<DevFreelaDbContext>(o => o.UseInMemoryDatabase("devfreeladb"));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); 
+builder.Services.AddDbContext<DevFreelaDbContext>(o => o.UseNpgsql(connectionString));
+
 
 var app = builder.Build();
 

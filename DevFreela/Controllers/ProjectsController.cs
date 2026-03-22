@@ -18,14 +18,16 @@ public class ProjectsController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult Get()
+    public IActionResult Get(string search = "", int page = 0, int pageSize = 10)
     {
         try
         {
             var projects = _dbContext.Projects
                 .Include(p => p.Client)
                 .Include(p => p.Developer)
-                .Where(p => p.IsDeleted == false)
+                .Where(p => !p.IsDeleted && (search == "" || p.Title.ToLower().Contains(search.ToLower()) || p.Description.ToLower().Contains(search.ToLower())))
+                .Skip(page * pageSize)
+                .Take(pageSize)
                 .ToList();
 
             var model = projects.Select(ProjectModel.FromEntity).ToList();
