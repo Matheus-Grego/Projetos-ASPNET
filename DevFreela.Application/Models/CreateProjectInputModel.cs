@@ -10,5 +10,5 @@ public class CreateProjectInputModel
     public Guid idDeveloper { get; set; }
     public decimal totalCost { get; set; }
 
-    public ProjectEntity toEntity() => new ProjectEntity(title, description,idDeveloper, idClient, totalCost);
+    public static ProjectEntity toEntity(CreateProjectInputModel model) => new ProjectEntity(model.title, model.description, model.idDeveloper, model.idClient, model.totalCost);
 }

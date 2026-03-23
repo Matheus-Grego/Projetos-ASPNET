@@ -9,6 +9,7 @@ public class ProjectEntity : BaseEntity
     {
         Title = title;
         DeveloperId = developerId;
+        Description = description;
         ClientID = clientId;
         TotalCost = totalCost;
         Status = ProjectStatus.Created;

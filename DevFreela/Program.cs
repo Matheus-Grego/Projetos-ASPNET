@@ -1,3 +1,4 @@
+using DevFreela.Application;
 using DevFreela.Handlers;
 using DevFreela.Application.Models;
 using DevFreela.Infrastructure.Persistance;
@@ -14,6 +15,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAplication();
 
 builder.Services.AddExceptionHandler<APIExceptionHandler>();
 builder.Services.AddProblemDetails();

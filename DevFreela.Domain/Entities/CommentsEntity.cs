@@ -17,8 +17,8 @@ public class CommentsEntity : BaseEntity
     public ProjectEntity Project { get; set; }
     public UserEntity User { get; set; }
     public string Content{ get; set; }
-    public List<byte[]> Images { get; set; }
-    public List<CommentsEntity> Replies { get; set; }
+    public List<byte[]>? Images { get; set; }
+    public List<CommentsEntity>? Replies { get; set; }
     public int TotalLikes { get; set; }
     
 }

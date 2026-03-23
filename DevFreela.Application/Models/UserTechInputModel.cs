@@ -4,6 +4,8 @@ namespace DevFreela.Application.Models;
 
 public class UserTechInputModel
 {
+    public UserTechInputModel() { }
+
     public UserTechInputModel(Guid userId, Guid[] tech) : base()
     {
         UserId = userId;
