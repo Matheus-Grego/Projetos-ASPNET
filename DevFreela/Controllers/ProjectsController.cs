@@ -1,10 +1,12 @@
-using DevFreela.Domain.Entities;
-using DevFreela.Application.Models;
-using DevFreela.Application.Services;
-using DevFreela.Infrastructure.Persistance;
+using DevFreela.Application.Commands.DeleteProject;
+using DevFreela.Application.Commands.InsertComment;
+using DevFreela.Application.Commands.InsertProject;
+using DevFreela.Application.Commands.UpdateProject;
+using DevFreela.Application.Queries.GetAllProjects;
+using DevFreela.Application.Queries.GetCommentsByProject;
+using DevFreela.Application.Queries.GetProjectById;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace DevFreela.Controllers;
 
@@ -12,25 +14,23 @@ namespace DevFreela.Controllers;
 [Route("projects")]
 public class ProjectsController : ControllerBase
 {
-    private readonly DevFreelaDbContext _dbContext;
-    private readonly IProjectService _projectService;
-    public ProjectsController(DevFreelaDbContext context, IProjectService projectService)
+    private readonly IMediator _mediator;
+    public ProjectsController(IMediator mediator)
     {
-        _dbContext =  context;
-        _projectService = projectService;
+        _mediator = mediator;
     }
     
     [HttpGet]
-    public IActionResult Get(string search = "", int page = 0, int pageSize = 10)
+    public async Task<IActionResult> Get(string search = "", int page = 1)
     {
-        var result = _projectService.GetAllProjects(search, page, pageSize);
+        var result =  _mediator.Send(new GetAllProjectsQuery(search, page));
         return Ok(result);
     }
     
     [HttpGet("{projectId}")]
-    public IActionResult GetByProjectId(Guid projectId)
+    public async Task<IActionResult> GetByProjectId(Guid projectId)
     {
-        var result = _projectService.GetProjectById(projectId);
+        var result = await _mediator.Send(new GetProjectByIdQuery(projectId));
         if(!result.IsSuccessful)
             return BadRequest(result.Message);
         
@@ -38,16 +38,21 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post(CreateProjectInputModel model)
+    public async Task<IActionResult> Post(InsertProjectCommand command)
     {
-        var result = _projectService.InsertProject(model);
-        return CreatedAtAction(nameof(GetByProjectId), new { projectId = result.Data}, model);
+        var result = await _mediator.Send(command);
+
+        if (!result.IsSuccessful)
+        {
+            return BadRequest(result.Message);
+        }
+        return CreatedAtAction(nameof(GetByProjectId), new { projectId = result.Data}, command);
     }
 
     [HttpPut("{projectId}")]
-    public IActionResult Put(ProjectModel model)
+    public async Task<IActionResult> Put(UpdateProjectCommand command)
     {
-        var result = _projectService.UpdateProject(model);
+        var result = await _mediator.Send(command);
         
         if(!result.IsSuccessful)
             return BadRequest(result.Message);
@@ -56,9 +61,9 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpDelete("{projectId}")]
-    public IActionResult Delete(Guid projectId)
+    public async Task<IActionResult> Delete(Guid projectId)
     {
-        var result = _projectService.DeleteProject(projectId);
+        var result = await _mediator.Send(new DeleteProjectCommand(projectId));
         
         if(!result.IsSuccessful)
             return BadRequest(result.Message);
@@ -67,9 +72,9 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet("{projectId}/comments")]
-    public IActionResult GetComments(Guid projectId)
+    public async Task<IActionResult> GetComments(Guid projectId)
     {
-       var result =  _projectService.GetComments(projectId);
+       var result =  await _mediator.Send(new GetCommentsByProjectQuery(projectId));
        
        if(!result.IsSuccessful)
            return BadRequest(result.Message);
@@ -78,10 +83,9 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost("{projectId}/comments")]
-    public IActionResult PostComments(CreateCommentInputModel comment)
+    public async Task<IActionResult> PostComments(InsertCommentCommand command)
     {
-
-        var result = _projectService.InsertComments(comment);
+        var result = await _mediator.Send(command);
         if (!result.IsSuccessful)
             return BadRequest(result.Message);
 

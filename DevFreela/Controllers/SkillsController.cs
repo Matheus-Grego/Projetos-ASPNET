@@ -26,6 +26,7 @@ public class SkillsController : ControllerBase
     [HttpPost]
     public IActionResult Post(TechnologyModel technologyModel)
     {
+
         var entity = TechnologyModel.ToEntity(technologyModel);
         _dbContext.Techs.Add(entity);
         _dbContext.SaveChanges();

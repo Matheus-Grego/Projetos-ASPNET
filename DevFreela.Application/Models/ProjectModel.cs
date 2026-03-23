@@ -6,6 +6,8 @@ namespace DevFreela.Application.Models;
 
 public class ProjectModel : BaseModel 
 {
+    protected ProjectModel() { }
+
     public ProjectModel(string title, string description,Guid developerId, Guid clientId, List<TechEntity> technologies)
     {
         Title = title;
@@ -13,6 +15,7 @@ public class ProjectModel : BaseModel
         Technologies = technologies;
         ClientId = clientId;
         DeveloperId = developerId;
+        
     }
     
     public string Title { get; set; }

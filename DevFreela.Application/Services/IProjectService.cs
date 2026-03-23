@@ -14,5 +14,6 @@ public interface IProjectService
     ResultViewModel DeleteProject(Guid projectId);
     ResultViewModel InsertComments(CreateCommentInputModel Comment);
     ResultViewModel<List<CreateCommentInputModel>> GetComments(Guid projectId);
+    ResultViewModel CompleteProject(Guid projectId);
 
 }

@@ -47,6 +47,14 @@ public class ProjectEntity : BaseEntity
         Status = ProjectStatus.OnGoing;
     }
 
-    
 
+    public void Complete()
+    {
+        if (Status != ProjectStatus.OnGoing)
+        {
+            throw new InvalidOperationException();
+        }
+
+        Status = ProjectStatus.Completed;
+    }
 }

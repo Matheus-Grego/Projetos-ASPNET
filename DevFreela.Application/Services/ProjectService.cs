@@ -47,18 +47,12 @@ public class ProjectService : IProjectService
 
     public ResultViewModel<Guid> InsertProject(CreateProjectInputModel project)
     {
-        try
-        {
+
             var entity = CreateProjectInputModel.toEntity(project);
             _dbContext.Projects.Add(entity);
             _dbContext.SaveChanges();
 
             return ResultViewModel<Guid>.Success(entity.Id);
-        }
-        catch (Exception e)
-        {
-            return ResultViewModel<Guid>.Failed(e.Message);
-        }
     }
 
     public ResultViewModel UpdateProject(ProjectModel model)
@@ -92,8 +86,7 @@ public class ProjectService : IProjectService
 
     public ResultViewModel InsertComments(CreateCommentInputModel Comment)
     {
-        try
-        {
+
             var project = _dbContext.Projects.SingleOrDefault(x => x.Id == Comment.ProjectId);
             if (project == null)
                 return ResultViewModel.Failed("Project not found");
@@ -103,18 +96,13 @@ public class ProjectService : IProjectService
             _dbContext.Comments.Add(comments);
             _dbContext.SaveChanges();
             return ResultViewModel.Success();
-        }
-        catch (Exception e)
-        {
-            return ResultViewModel.Failed(e.Message);
-        }
+
 
     }
 
     public ResultViewModel<List<CreateCommentInputModel>> GetComments(Guid projectId)
     {
-        try
-        {
+
             var project = _dbContext.Projects.Include(x => x.Comments).SingleOrDefault(x => x.Id == projectId);
 
             if (project == null)
@@ -126,10 +114,17 @@ public class ProjectService : IProjectService
                 .ToList();
 
             return ResultViewModel<List<CreateCommentInputModel>>.Success(comments);
-        }
-        catch (Exception e)
-        {
-            return ResultViewModel<List<CreateCommentInputModel>>.Failed(e.Message);
-        }
+
+    }
+
+    public ResultViewModel CompleteProject(Guid projectId)
+    {
+        var project = _dbContext.Projects.SingleOrDefault(x => x.Id == projectId);
+        if (project == null)
+            return ResultViewModel.Failed("Project not found");
+        
+        project.Complete();
+        _dbContext.SaveChanges();
+        return ResultViewModel.Success();
     }
 }
