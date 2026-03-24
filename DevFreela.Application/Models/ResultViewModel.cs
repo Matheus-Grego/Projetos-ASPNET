@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace DevFreela.Application.Models;
 
-public class ResultViewModel
+public class ResultViewModel : IRequest
 {
     public ResultViewModel(bool isSuccessful = true, string message = "")
     {

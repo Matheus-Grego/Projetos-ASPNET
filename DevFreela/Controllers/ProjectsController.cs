@@ -23,7 +23,7 @@ public class ProjectsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get(string search = "", int page = 1)
     {
-        var result =  _mediator.Send(new GetAllProjectsQuery(search, page));
+        var result =  await _mediator.Send(new GetAllProjectsQuery(search, page));
         return Ok(result);
     }
     
@@ -90,7 +90,5 @@ public class ProjectsController : ControllerBase
             return BadRequest(result.Message);
 
         return NoContent();
-        
-        
     }
 }

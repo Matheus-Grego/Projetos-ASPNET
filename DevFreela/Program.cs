@@ -1,6 +1,7 @@
 using DevFreela.Application;
 using DevFreela.Handlers;
 using DevFreela.Application.Models;
+using DevFreela.Infrastructure;
 using DevFreela.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAplication();
+builder.Services.AddAplication()
+    .AddInfrasctucture(builder.Configuration);
+
 
 builder.Services.AddExceptionHandler<APIExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -24,8 +27,7 @@ builder.Services.Configure<FreelanceTotalCostModel>(
     builder.Configuration.GetSection("FreelanceTotalCostConfig"));
 
 // builder.Services.AddDbContext<DevFreelaDbContext>(o => o.UseInMemoryDatabase("devfreeladb"));
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); 
-builder.Services.AddDbContext<DevFreelaDbContext>(o => o.UseNpgsql(connectionString));
+
 
 
 var app = builder.Build();

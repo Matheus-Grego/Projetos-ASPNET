@@ -1,4 +1,5 @@
 using DevFreela.Application.Models;
+using DevFreela.Domain.Repositories;
 using DevFreela.Infrastructure.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,16 +8,16 @@ namespace DevFreela.Application.Queries.GetCommentsByProject;
 
 public class GetCommentsByProjectHandler : IRequestHandler<GetCommentsByProjectQuery, ResultViewModel<List<CreateCommentInputModel>>>
 {
-    private readonly DevFreelaDbContext _dbContext;
+    private readonly IProjectRepository _repository;
 
-    public GetCommentsByProjectHandler(DevFreelaDbContext context)
+    public GetCommentsByProjectHandler(DevFreelaDbContext context, IProjectRepository repository)
     {
-        _dbContext = context;
+        _repository = repository;
     }
 
     public async Task<ResultViewModel<List<CreateCommentInputModel>>> Handle(GetCommentsByProjectQuery request, CancellationToken cancellationToken)
     {
-        var project = await _dbContext.Projects.Include(x => x.Comments).SingleOrDefaultAsync(x => x.Id == request.ProjectId);
+        var project = await _repository.GetDetailsById(request.ProjectId);
 
         if (project == null)
             return ResultViewModel<List<CreateCommentInputModel>>.Failed("Project Not found");

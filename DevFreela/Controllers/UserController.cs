@@ -1,66 +1,48 @@
-using DevFreela.Domain.Entities;
-using DevFreela.Application.Models;
+using DevFreela.Application.Commands.InsertUser;
+using DevFreela.Application.Commands.InsertUserSkill;
+using DevFreela.Application.Queries.GetAllUsers;
+using DevFreela.Application.Queries.GetUserById;
 using DevFreela.Infrastructure.Persistance;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace DevFreela.Controllers;
 
 [ApiController]
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-    private readonly DevFreelaDbContext _dbContext;
-    public UserController(DevFreelaDbContext dbContext)
+    private readonly IMediator _mediator;
+    public UserController(DevFreelaDbContext dbContext, IMediator mediator)
     {
-        _dbContext = dbContext;
+        _mediator = mediator;
     }
 
     [HttpGet]
-    public IActionResult GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        var users = _dbContext.Users.ToList();
-        var model = users.Select(UserModel.FromEntity).ToList();
-        return Ok(model);
+        var result = await _mediator.Send(new GetAllUsersQuery());
+        return Ok(result);
     }
     
     [HttpPost]
-    public IActionResult CreateUser(CreateUserInputModel userInput)
+    public async Task<IActionResult> CreateUser(InsertUserCommand command)
     {
-        _dbContext.Users.Add(userInput.ToEntity());
-        _dbContext.SaveChanges();
-        
-        var user = _dbContext.Users.SingleOrDefault(u => u.Email == userInput.Email);
-        if (user == null)
-            return NotFound();
-        
-        var model = UserModel.FromEntity(user);
-        
-        return Ok(model);
+        var result = await _mediator.Send(command);
+        return NoContent();
     }
+    
     [HttpGet("{userId}")]
-    public IActionResult GetUserById(Guid userId)
+    public async Task<IActionResult> GetUserById(Guid userId)
     {
-        var user = _dbContext.Users
-            .Include(t => t.Technologies)
-            .ThenInclude(x => x.Technology)
-            .SingleOrDefault(u => u.Id == userId);
-        
-        if (user == null)
-            return NotFound();
-        
-        var model = UserModel.FromEntity(user);
-        return Ok(model);
+        var result = await _mediator.Send(new GetUserByIdQuery(userId));
+        return Ok(result);
     }
 
     [HttpPost("{userId}/skills")]
-    public IActionResult PostSkills(Guid userId, UserTechInputModel userSkill)
+    public async Task<IActionResult> PostSkills(Guid userId, InsertUserSkillCommand userSkill)
     {
-        var userSkills = userSkill.TechnologyID.Select(s => new UserTechEntity(userId, s)).ToList();
-
-        _dbContext.UserTechs.AddRange(userSkills);
-        _dbContext.SaveChanges();
-
+        userSkill.UserId = userId;
+        var result = await _mediator.Send(userSkill);
         return NoContent();
     }
 

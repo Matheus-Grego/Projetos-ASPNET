@@ -1,5 +1,11 @@
+using DevFreela.Application.Commands.DeleteSkill;
+using DevFreela.Application.Commands.InsertSkill;
+using DevFreela.Application.Commands.UpdateSkill;
 using DevFreela.Application.Models;
+using DevFreela.Application.Queries.GetSkills;
+using DevFreela.Application.Queries.GetUserBySkill;
 using DevFreela.Infrastructure.Persistance;
+using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,65 +15,45 @@ namespace DevFreela.Controllers;
 [Route("skills")]
 public class SkillsController : ControllerBase
 {
-    private readonly DevFreelaDbContext _dbContext;
-    public SkillsController(DevFreelaDbContext dbContext)
+    private readonly IMediator _mediator;
+    public SkillsController(DevFreelaDbContext dbContext, IMediator mediator)
     {
-        _dbContext = dbContext;
+        _mediator = mediator;
     }
     
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var skills = _dbContext.Techs.ToList();
-        var model = skills.Select(x => TechnologyModel.FromEntity(x)).ToList();
-        return Ok(model);
+        var result = await _mediator.Send(new GetSkillsQuery());
+        return Ok(result);
     }
 
     [HttpPost]
-    public IActionResult Post(TechnologyModel technologyModel)
+    public async Task<IActionResult> Post(InsertSkillCommand command)
     {
-
-        var entity = TechnologyModel.ToEntity(technologyModel);
-        _dbContext.Techs.Add(entity);
-        _dbContext.SaveChanges();
+        var result = await _mediator.Send(command);
         return NoContent();
     }
 
     [HttpPut("{skillId}")]
-    public IActionResult Put(Guid skillId, TechnologyModel technologyModel)
+    public async Task<IActionResult> Put(Guid skillId, UpdateSkillCommand command)
     {
-        var skill = _dbContext.Techs.SingleOrDefault(t => t.Id == skillId);
-        if (skill == null)
-            return NotFound();
-        var entity = TechnologyModel.ToEntity(technologyModel);
-        skill.Update(entity);
-        _dbContext.SaveChanges();
-        
+        command.Id = skillId;
+        var result = await _mediator.Send(command);
         return NoContent();
     }
 
     [HttpDelete("{skillId}")]
-    public IActionResult Delete(Guid skillId, TechnologyModel technologyModel)
+    public async Task<IActionResult> Delete(Guid skillId)
     {
-        var skill = _dbContext.Techs.SingleOrDefault(t => t.Id == skillId);
-
-        if (skill == null)
-            return NotFound();
-        
-        skill.Delete();
-        _dbContext.SaveChanges();
+        var result = await _mediator.Send(new DeleteSkillCommand(skillId));
         return NoContent();
     }
 
     [HttpGet("{skillId}/users")]
-    public IActionResult GetUsersBySkill(Guid skillId)
+    public async Task<IActionResult> GetUsersBySkill(Guid skillId)
     {
-        var skill = _dbContext.UserTechs.Where(x => x.TechId == skillId).ToList();
-
-        if (skill == null)
-            return NotFound();
-        
-        var users = skill.Select(x => UserModel.FromEntity(x.User)).ToList();
-        return Ok(users);
+        var result = await _mediator.Send(new GetUsersBySkillQuery(skillId));
+        return Ok(result);
     }
 }

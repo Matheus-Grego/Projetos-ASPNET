@@ -1,4 +1,5 @@
 using DevFreela.Application.Models;
+using DevFreela.Domain.Entities;
 using MediatR;
 
 namespace DevFreela.Application.Commands.UpdateProject;
