@@ -30,4 +30,9 @@ public class UserEntity : BaseEntity
     public List<ProjectEntity> ProjectsAsClient { get; set; }
     public List<UserTechEntity> Technologies { get; set; }
     
+    public void UpdatePassword(string newPassword)
+    {
+        Password = newPassword;
+    }
+    
 }

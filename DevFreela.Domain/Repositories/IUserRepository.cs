@@ -8,5 +8,7 @@ public interface IUserRepository : IBaseRepository<UserEntity>
     Task<List<UserTechEntity>> GetuserBySkillId(Guid skillId);
     Task<UserEntity?> GetUserDetailsById(Guid id);
     Task<UserEntity> Login(string email, string password);
+    Task<bool> ExistsByEmail(string email);
+    Task<UserEntity?> GetUserByEmail(string email);
 
 }

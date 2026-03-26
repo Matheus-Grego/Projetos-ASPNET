@@ -23,6 +23,8 @@ builder.Services.AddAplication()
 builder.Services.AddExceptionHandler<APIExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddMemoryCache();
+
 builder.Services.Configure<FreelanceTotalCostModel>(
     builder.Configuration.GetSection("FreelanceTotalCostConfig"));
 

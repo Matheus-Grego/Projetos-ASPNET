@@ -1,6 +1,7 @@
 using DevFreela.Application.Commands.InsertUser;
 using DevFreela.Application.Commands.InsertUserSkill;
 using DevFreela.Application.Commands.Login;
+using DevFreela.Application.Commands.RecoveryPassword;
 using DevFreela.Application.Models;
 using DevFreela.Application.Queries.GetAllUsers;
 using DevFreela.Application.Queries.GetUserById;
@@ -71,5 +72,40 @@ public class UserController : ControllerBase
             return BadRequest(result.Message);
         }
         return Ok(result.Data);
+    }
+
+    [HttpPost("password-recovery/request")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RequestPasswordRecovery(RecoveryPasswordCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (!result.IsSuccessful)
+        {
+            return BadRequest(result.Message);
+        }
+        return Ok(result.Message);
+    }
+    [HttpPost("password-recovery/validate")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ValidateRecoveryCode(ValidateRecoveryPasswordCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (!result.IsSuccessful)
+        {
+            return BadRequest(result.Message);
+        }
+        return Ok(result.Message);
+        
+    }
+    [HttpPost("password-recovery/change")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (!result.IsSuccessful)
+        {
+            return BadRequest(result.Message);
+        }
+        return Ok(result.Message);    
     }
 }

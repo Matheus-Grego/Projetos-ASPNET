@@ -51,6 +51,11 @@ public class UserRepository : IUserRepository
         return  await _dbContext.Users.AnyAsync(u => u.Id == id);
     }
 
+    public async Task<bool> ExistsByEmail(string email)
+    {
+        return  await _dbContext.Users.AnyAsync(x => x.Email == email);
+    }
+
     public async Task InsertSkill(List<UserTechEntity> tech)
     {
         await _dbContext.UserTechs.AddRangeAsync(tech);
@@ -61,6 +66,11 @@ public class UserRepository : IUserRepository
     {
         return await _dbContext.UserTechs.Where(x => x.TechId == skillId).ToListAsync();
 
+    }
+
+    public async Task<UserEntity?> GetUserByEmail(string email)
+    {
+        return await _dbContext.Users.SingleOrDefaultAsync(x => x.Email == email);
     }
 
     public async Task<UserEntity> Login(string email, string password)
