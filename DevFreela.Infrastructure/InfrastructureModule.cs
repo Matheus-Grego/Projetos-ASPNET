@@ -1,9 +1,13 @@
+using System.Text;
 using DevFreela.Domain.Repositories;
+using DevFreela.Infrastructure.Auth;
 using DevFreela.Infrastructure.Persistance;
 using DevFreela.Infrastructure.Persistance.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DevFreela.Infrastructure;
 
@@ -11,7 +15,7 @@ public static class InfrastructureModule
 {
     public static IServiceCollection AddInfrasctucture(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddRepositories().AddData(configuration);
+        services.AddRepositories().AddAuth(configuration).AddData(configuration);
         return services;
     }
 
@@ -28,6 +32,28 @@ public static class InfrastructureModule
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ISkillRepository, SkillRepository>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IAuthService, AuthService>();
+        
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer =  true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                    
+                };
+            });
         return services;
     }
 }

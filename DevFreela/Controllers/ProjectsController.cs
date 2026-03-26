@@ -6,6 +6,7 @@ using DevFreela.Application.Queries.GetAllProjects;
 using DevFreela.Application.Queries.GetCommentsByProject;
 using DevFreela.Application.Queries.GetProjectById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.Controllers;
@@ -21,6 +22,7 @@ public class ProjectsController : ControllerBase
     }
     
     [HttpGet]
+    [Authorize (Roles = "Freelancer, Client")]
     public async Task<IActionResult> Get(string search = "", int page = 1)
     {
         var result =  await _mediator.Send(new GetAllProjectsQuery(search, page));
@@ -38,6 +40,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize (Roles = "Freelancer")]
     public async Task<IActionResult> Post(InsertProjectCommand command)
     {
         var result = await _mediator.Send(command);

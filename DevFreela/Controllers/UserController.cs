@@ -1,20 +1,27 @@
 using DevFreela.Application.Commands.InsertUser;
 using DevFreela.Application.Commands.InsertUserSkill;
+using DevFreela.Application.Commands.Login;
+using DevFreela.Application.Models;
 using DevFreela.Application.Queries.GetAllUsers;
 using DevFreela.Application.Queries.GetUserById;
+using DevFreela.Infrastructure.Auth;
 using DevFreela.Infrastructure.Persistance;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace DevFreela.Controllers;
 
 [ApiController]
 [Route("api/users")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public UserController(DevFreelaDbContext dbContext, IMediator mediator)
+    private readonly IAuthService _authService;
+    public UserController(IMediator mediator, IAuthService authService)
     {
         _mediator = mediator;
+        _authService = authService;
     }
 
     [HttpGet]
@@ -25,6 +32,7 @@ public class UserController : ControllerBase
     }
     
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> CreateUser(InsertUserCommand command)
     {
         var result = await _mediator.Send(command);
@@ -51,5 +59,17 @@ public class UserController : ControllerBase
     {
         var description = $"{image.FileName} => {image.Length} ";
         return Ok(description);
+    }
+
+    [HttpPut("login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(LoginCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (!result.IsSuccessful)
+        {
+            return BadRequest(result.Message);
+        }
+        return Ok(result.Data);
     }
 }

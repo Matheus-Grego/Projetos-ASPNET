@@ -62,4 +62,9 @@ public class UserRepository : IUserRepository
         return await _dbContext.UserTechs.Where(x => x.TechId == skillId).ToListAsync();
 
     }
+
+    public async Task<UserEntity> Login(string email, string password)
+    {
+        return await _dbContext.Users.SingleOrDefaultAsync(x => x.Email == email && x.Password == password);
+    }
 }
