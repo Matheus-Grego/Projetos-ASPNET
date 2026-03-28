@@ -4,6 +4,7 @@ namespace DevFreela.Domain.Entities;
 
 public class ProjectEntity : BaseEntity
 {
+    public const string INVALID_STATE_MESSAGE = "Project is in invalid state.";
     protected ProjectEntity() {}
     public ProjectEntity(string title, string description, Guid developerId, Guid clientId, decimal totalCost) : base()
     {
@@ -41,7 +42,7 @@ public class ProjectEntity : BaseEntity
     {
         if (Status != ProjectStatus.Created)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(INVALID_STATE_MESSAGE);
         }
 
         Status = ProjectStatus.OnGoing;
@@ -52,7 +53,7 @@ public class ProjectEntity : BaseEntity
     {
         if (Status != ProjectStatus.OnGoing)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(INVALID_STATE_MESSAGE);
         }
 
         Status = ProjectStatus.Completed;

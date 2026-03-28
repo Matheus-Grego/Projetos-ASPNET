@@ -1,4 +1,4 @@
-using DevFreela.Application.Commands.InsertUser;
+using DevFreela.Application.Commands.Users.InsertUser;
 using FluentValidation;
 
 namespace DevFreela.Application.Validators;

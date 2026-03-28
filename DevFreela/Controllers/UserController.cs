@@ -1,10 +1,12 @@
-using DevFreela.Application.Commands.InsertUser;
-using DevFreela.Application.Commands.InsertUserSkill;
-using DevFreela.Application.Commands.Login;
-using DevFreela.Application.Commands.RecoveryPassword;
+using DevFreela.Application.Commands.Users.ChangePassword;
+using DevFreela.Application.Commands.Users.InsertUser;
+using DevFreela.Application.Commands.Users.InsertUserSkill;
+using DevFreela.Application.Commands.Users.Login;
+using DevFreela.Application.Commands.Users.RecoveryPassword;
+using DevFreela.Application.Commands.Users.ValidatePassword;
 using DevFreela.Application.Models;
-using DevFreela.Application.Queries.GetAllUsers;
-using DevFreela.Application.Queries.GetUserById;
+using DevFreela.Application.Queries.Users.GetAllUsers;
+using DevFreela.Application.Queries.Users.GetUserById;
 using DevFreela.Infrastructure.Auth;
 using DevFreela.Infrastructure.Persistance;
 using MediatR;
@@ -15,6 +17,7 @@ namespace DevFreela.Controllers;
 [ApiController]
 [Route("api/users")]
 [Authorize]
+
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -25,7 +28,8 @@ public class UserController : ControllerBase
         _authService = authService;
     }
 
-    [HttpGet]
+    [HttpGet] 
+    [Authorize (Roles = "Client")]
     public async Task<IActionResult> GetUsers()
     {
         var result = await _mediator.Send(new GetAllUsersQuery());
@@ -62,7 +66,7 @@ public class UserController : ControllerBase
         return Ok(description);
     }
 
-    [HttpPut("login")]
+    [HttpPost("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login(LoginCommand command)
     {

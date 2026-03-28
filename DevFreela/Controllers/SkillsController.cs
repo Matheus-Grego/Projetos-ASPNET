@@ -1,9 +1,9 @@
-using DevFreela.Application.Commands.DeleteSkill;
-using DevFreela.Application.Commands.InsertSkill;
-using DevFreela.Application.Commands.UpdateSkill;
+using DevFreela.Application.Commands.Skills.DeleteSkill;
+using DevFreela.Application.Commands.Skills.InsertSkill;
+using DevFreela.Application.Commands.Skills.UpdateSkill;
 using DevFreela.Application.Models;
-using DevFreela.Application.Queries.GetSkills;
-using DevFreela.Application.Queries.GetUserBySkill;
+using DevFreela.Application.Queries.Skills.GetSkills;
+using DevFreela.Application.Queries.Users.GetUserBySkill;
 using DevFreela.Infrastructure.Persistance;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
